@@ -28,6 +28,8 @@ jobs:
        #echo "host configure"
        ssh -i /home/runner/.ssh/id_rsa.pem ec2-user@18.116.203.193
        ssh  ec2-user@18.116.203.193
+       env:
+        ANSIBLE_HOST_KEY_CHECKING: False
     - name: Run ansible script
       shell: bash 
       run: |
