@@ -17,26 +17,18 @@ jobs:
         ANSIBLE_HOST_KEY_CHECKING: False
     - name: Run Ansible Playbook on provided host
       run: |
-       eval `ssh-agent`
        mkdir -p /home/runner/.ssh/i
        touch /home/runner/.ssh/id_rsa.pem
        echo -e "${{secrets.SSH_KEY}}" > /home/runner/.ssh/id_rsa.pem
-       chmod 600 /home/runner/.ssh/id_rsa.pem
-       ssh-add /home/runner/.ssh/id_rsa.pem
-       echo "changed permission"
+       chmod 600 /home/runner/.ssh/id_rsa.pem''
        ssh-keyscan -t rsa,dsa,ecdsa,ed25519 ${{secrets.SSH_HOST}} >> /home/runner/.ssh/known_hosts
-       #echo "host configure"
+       eval `ssh-agent`
+       ssh-add /home/runner/.ssh/id_rsa.pem
        # ssh -i /home/runner/.ssh/id_rsa.pem ec2-user@18.116.203.193
        ssh  ec2-user@18.116.203.193
-  
-    - name: Run ansible script
-      shell: bash 
-      run: |
-       #service ssh status
-       #eval `ssh-agent`
-       #ssh-add /home/runner/.ssh/id_rsa.pem
        #ansible-playbook -u ${{secrets.ANSIBLE_DEPLOY_USER}} -vvv --private-key /home/runner/.ssh/id_rsa.pem -i host1 playbook/nginx.yaml
        ansible-playbook -u ${{secrets.ANSIBLE_DEPLOY_USER}} -i host1 playbook/nginx.yaml
+  
        
 
  
