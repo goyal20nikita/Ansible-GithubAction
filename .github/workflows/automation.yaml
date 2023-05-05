@@ -1,0 +1,34 @@
+name: Ansible Playbook integrated with GitHub
+on:
+  workflow_dispatch:
+jobs:
+  ansible_automation:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Ansible Installation
+      run: sudo apt-get install ansible
+    - name: Run Ansible playbook on Localhost
+      run: |
+       ansible --version
+       ansible-playbook playbook/msg.yaml
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: False
+    - name: Run Ansible Playbook on provided host
+      run: |
+       mkdir -p /home/runner/.ssh/i
+       touch /home/runner/.ssh/id_rsa.pem
+       echo -e "${{secrets.SSH_KEY}}" > /home/runner/.ssh/id_rsa.pem
+       chmod 600 /home/runner/.ssh/id_rsa.pem''
+       eval `ssh-agent`
+       ssh-add /home/runner/.ssh/id_rsa.pem
+       ansible-playbook -u ${{secrets.ANSIBLE_DEPLOY_USER}} -i host1 playbook/nginx.yaml
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: False
+  
+       
+
+ 
+       
+      
