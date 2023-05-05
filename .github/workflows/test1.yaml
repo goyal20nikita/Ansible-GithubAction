@@ -21,8 +21,8 @@ jobs:
        mkdir -p /home/runner/.ssh/i
        touch /home/runner/.ssh/id_rsa.pem
        echo -e "${{secrets.SSH_KEY}}" > /home/runner/.ssh/id_rsa.pem
-       ssh-add /home/runner/.ssh/id_rsa.pem
        chmod 600 /home/runner/.ssh/id_rsa.pem
+       ssh-add /home/runner/.ssh/id_rsa.pem
        echo "changed permission"
        #ssh-keyscan -t rsa,dsa,ecdsa,ed25519 ${{secrets.SSH_HOST}} >> /home/runner/.ssh/known_hosts
        #echo "host configure"
