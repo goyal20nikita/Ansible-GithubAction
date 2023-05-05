@@ -18,7 +18,7 @@ jobs:
     - name: Run Ansible Playbook on provided host
       run: |
        eval `ssh-agent`
-       ssh-add ${{secrets.SSH_KEY}}
+       ssh-add - <<< ${{secrets.SSH_KEY}}
        # mkdir -p /home/runner/.ssh/
        #touch /home/runner/.ssh/id_rsa.pem
        #echo -e "${{secrets.SSH_KEY}}" > /home/runner/.ssh/id_rsa.pem
