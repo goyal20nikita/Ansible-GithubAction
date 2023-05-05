@@ -33,7 +33,6 @@ jobs:
       shell: bash 
       run: |
        service ssh status
-       ansible -m ping -i host1
        #ansible-playbook -u ${{secrets.ANSIBLE_DEPLOY_USER}} -vvv --private-key /home/runner/.ssh/id_rsa.pem -i host1 playbook/nginx.yaml
        ansible-playbook -u ${{secrets.ANSIBLE_DEPLOY_USER}} -i host1 playbook/nginx.yaml
        
