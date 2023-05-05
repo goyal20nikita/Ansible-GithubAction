@@ -32,9 +32,9 @@ jobs:
     - name: Run ansible script
       shell: bash 
       run: |
-       service ssh status
-       eval `ssh-agent`
-       ssh-add /home/runner/.ssh/id_rsa.pem
+       #service ssh status
+       #eval `ssh-agent`
+       #ssh-add /home/runner/.ssh/id_rsa.pem
        #ansible-playbook -u ${{secrets.ANSIBLE_DEPLOY_USER}} -vvv --private-key /home/runner/.ssh/id_rsa.pem -i host1 playbook/nginx.yaml
        ansible-playbook -u ${{secrets.ANSIBLE_DEPLOY_USER}} -i host1 playbook/nginx.yaml
        
