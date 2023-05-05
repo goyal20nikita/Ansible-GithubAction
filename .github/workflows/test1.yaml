@@ -18,24 +18,22 @@ jobs:
     - name: Run Ansible Playbook on provided host
       run: |
        eval `ssh-agent`
-       ssh-add - <<< ${{secrets.SSH_KEY}}
-       pwd
        mkdir -p /home/runner/.ssh/i
        touch /home/runner/.ssh/id_rsa.pem
        echo -e "${{secrets.SSH_KEY}}" > /home/runner/.ssh/id_rsa.pem
-       cat /home/runner/.ssh/id_rsa.pem
+       ssh-add /home/runner/.ssh/id_rsa.pem
        chmod 600 /home/runner/.ssh/id_rsa.pem
        echo "changed permission"
-       ssh-keyscan -t rsa,dsa,ecdsa,ed25519 ${{secrets.SSH_HOST}} >> /home/runner/.ssh/known_hosts
-       echo "host configure"
-       ssh -i /home/runner/.ssh/id_rsa.pem ec2-user@172.31.40.39
+       #ssh-keyscan -t rsa,dsa,ecdsa,ed25519 ${{secrets.SSH_HOST}} >> /home/runner/.ssh/known_hosts
+       #echo "host configure"
+       #ssh -i /home/runner/.ssh/id_rsa.pem ec2-user@172.31.40.39
+       ssh  ec2-user@172.31.40.39
     - name: Run ansible script
       shell: bash 
       run: |
        service ssh status
-       #cd infrastructure/ansible
-       #cat setup-prod.yml
-       ansible-playbook -u ${{secrets.ANSIBLE_DEPLOY_USER}} -vvv --private-key /home/runner/.ssh/id_rsa.pem -i host1 playbook/nginx.yaml
+       #ansible-playbook -u ${{secrets.ANSIBLE_DEPLOY_USER}} -vvv --private-key /home/runner/.ssh/id_rsa.pem -i host1 playbook/nginx.yaml
+       ansible-playbook -u ${{secrets.ANSIBLE_DEPLOY_USER}} -i host1 playbook/nginx.yaml
        
 
  
